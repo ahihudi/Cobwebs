@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Cobwebs" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="CobwebsContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccountSet" EntityType="Cobwebs.Account" />
+          <EntitySet Name="AvatarSet" EntityType="Cobwebs.Avatar" />
+          <AssociationSet Name="AvatarAccount" Association="Cobwebs.AvatarAccount">
+            <End Role="Avatar" EntitySet="AvatarSet" />
+            <End Role="Account" EntitySet="AccountSet" />
+          </AssociationSet>
+          <EntitySet Name="NoteSet" EntityType="Cobwebs.Note" />
+          <AssociationSet Name="NoteAvatar" Association="Cobwebs.NoteAvatar">
+            <End Role="Note" EntitySet="NoteSet" />
+            <End Role="Avatar" EntitySet="AvatarSet" />
+          </AssociationSet>
+          <EntitySet Name="AvatarTaskSet" EntityType="Cobwebs.AvatarTask" />
+          <AssociationSet Name="TaskAvatar" Association="Cobwebs.TaskAvatar">
+            <End Role="Task" EntitySet="AvatarTaskSet" />
+            <End Role="Avatar" EntitySet="AvatarSet" />
+          </AssociationSet>
+          <EntitySet Name="AlertBotSet" EntityType="Cobwebs.AlertBot" />
+          <EntitySet Name="AutoAccountSet" EntityType="Cobwebs.AutoAccount" />
+          <AssociationSet Name="AutoAccountAlertBot" Association="Cobwebs.AutoAccountAlertBot">
+            <End Role="AutoAccount" EntitySet="AutoAccountSet" />
+            <End Role="AlertBot" EntitySet="AlertBotSet" />
+          </AssociationSet>
+          <EntitySet Name="ProjectSet" EntityType="Cobwebs.Project" />
+          <AssociationSet Name="ProjectAvatar" Association="Cobwebs.ProjectAvatar">
+            <End Role="Project" EntitySet="ProjectSet" />
+            <End Role="Avatar" EntitySet="AvatarSet" />
+          </AssociationSet>
+          <EntitySet Name="HistorySet" EntityType="Cobwebs.History" />
+          <AssociationSet Name="AvatarAutoAccount" Association="Cobwebs.AvatarAutoAccount">
+            <End Role="Avatar" EntitySet="AvatarSet" />
+            <End Role="AutoAccount" EntitySet="AutoAccountSet" />
+          </AssociationSet>
+          <EntitySet Name="TargetsSet" EntityType="Cobwebs.Targets" />
+          <AssociationSet Name="ProjectTargets" Association="Cobwebs.ProjectTargets">
+            <End Role="Project" EntitySet="ProjectSet" />
+            <End Role="Targets" EntitySet="TargetsSet" />
+          </AssociationSet>
+          <AssociationSet Name="TargetsAvatar" Association="Cobwebs.TargetsAvatar">
+            <End Role="Targets" EntitySet="TargetsSet" />
+            <End Role="Avatar" EntitySet="AvatarSet" />
+          </AssociationSet>
+          <AssociationSet Name="AvatarAvatar" Association="Cobwebs.AvatarAvatar">
+            <End Role="Avatar" EntitySet="AvatarSet" />
+            <End Role="Avatar1" EntitySet="AvatarSet" />
+          </AssociationSet>
+          <EntitySet Name="AddressSet" EntityType="Cobwebs.Address" />
+          <EntitySet Name="TargetPlatfromSet" EntityType="Cobwebs.TargetPlatfrom" />
+          <AssociationSet Name="TargetsTargetPlatfrom" Association="Cobwebs.TargetsTargetPlatfrom">
+            <End Role="Targets" EntitySet="TargetsSet" />
+            <End Role="TargetPlatfrom" EntitySet="TargetPlatfromSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AvatarID" Type="String" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" />
+          <NavigationProperty Name="Avatars" Relationship="Cobwebs.AvatarAccount" FromRole="Account" ToRole="Avatar" />
+        </EntityType>
+        <EntityType Name="Avatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" />
+          <Property Name="AvatarType" Type="String" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Cobwebs.AvatarAccount" FromRole="Avatar" ToRole="Account" />
+          <NavigationProperty Name="Notes" Relationship="Cobwebs.NoteAvatar" FromRole="Avatar" ToRole="Note" />
+          <NavigationProperty Name="Tasks" Relationship="Cobwebs.TaskAvatar" FromRole="Avatar" ToRole="Task" />
+          <NavigationProperty Name="Project" Relationship="Cobwebs.ProjectAvatar" FromRole="Avatar" ToRole="Project" />
+          <NavigationProperty Name="AutoAccounts" Relationship="Cobwebs.AvatarAutoAccount" FromRole="Avatar" ToRole="AutoAccount" />
+          <Property Name="Gender" Type="Cobwebs.Gender" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <NavigationProperty Name="Targets" Relationship="Cobwebs.TargetsAvatar" FromRole="Avatar" ToRole="Targets" />
+          <NavigationProperty Name="Avatar1" Relationship="Cobwebs.AvatarAvatar" FromRole="Avatar" ToRole="Avatar1" />
+          <NavigationProperty Name="Avatar2" Relationship="Cobwebs.AvatarAvatar" FromRole="Avatar1" ToRole="Avatar" />
+          <Property Name="ProjectID" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="AvatarAccount">
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="1" />
+          <End Type="Cobwebs.Account" Role="Account" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AvatarID" Type="Int32" Nullable="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" />
+          <NavigationProperty Name="Avatar" Relationship="Cobwebs.NoteAvatar" FromRole="Note" ToRole="Avatar" />
+        </EntityType>
+        <Association Name="NoteAvatar">
+          <End Type="Cobwebs.Note" Role="Note" Multiplicity="*" />
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="1" />
+        </Association>
+        <EntityType Name="AvatarTask">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduledDate" Type="DateTime" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="true" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Avatar" Relationship="Cobwebs.TaskAvatar" FromRole="Task" ToRole="Avatar" />
+          <Property Name="AvatarID" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="TaskAvatar">
+          <End Type="Cobwebs.AvatarTask" Role="Task" Multiplicity="*" />
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="1" />
+        </Association>
+        <EntityType Name="AlertBot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="AutoAccount" Relationship="Cobwebs.AutoAccountAlertBot" FromRole="AlertBot" ToRole="AutoAccount" />
+        </EntityType>
+        <EntityType Name="AutoAccount">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="AlertBot" Relationship="Cobwebs.AutoAccountAlertBot" FromRole="AutoAccount" ToRole="AlertBot" />
+          <NavigationProperty Name="Avatar" Relationship="Cobwebs.AvatarAutoAccount" FromRole="AutoAccount" ToRole="Avatar" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Pasword" Type="String" Nullable="false" />
+          <Property Name="AlertBotID" Type="Int32" Nullable="false" />
+          <Property Name="Schedule" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="AutoAccountAlertBot">
+          <End Type="Cobwebs.AutoAccount" Role="AutoAccount" Multiplicity="*" />
+          <End Type="Cobwebs.AlertBot" Role="AlertBot" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Avatars" Relationship="Cobwebs.ProjectAvatar" FromRole="Project" ToRole="Avatar" />
+          <NavigationProperty Name="Targets" Relationship="Cobwebs.ProjectTargets" FromRole="Project" ToRole="Targets" />
+        </EntityType>
+        <Association Name="ProjectAvatar">
+          <End Type="Cobwebs.Project" Role="Project" Multiplicity="1" />
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="*" />
+        </Association>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Url" Type="String" Nullable="false" />
+          <Property Name="DateTime" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="AvatarAutoAccount">
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="1" />
+          <End Type="Cobwebs.AutoAccount" Role="AutoAccount" Multiplicity="*" />
+        </Association>
+        <EnumType Name="AvatarTypes" />
+        <EnumType Name="Gender">
+          <Member Name="Male" />
+          <Member Name="Female" />
+        </EnumType>
+        <EntityType Name="Targets">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="CreationTime" Type="String" Nullable="false" />
+          <Property Name="UpdateTime" Type="String" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Cobwebs.ProjectTargets" FromRole="Targets" ToRole="Project" />
+          <Property Name="ProjectID" Type="String" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <NavigationProperty Name="Avatars" Relationship="Cobwebs.TargetsAvatar" FromRole="Targets" ToRole="Avatar" />
+          <NavigationProperty Name="TargetPlatfrom" Relationship="Cobwebs.TargetsTargetPlatfrom" FromRole="Targets" ToRole="TargetPlatfrom" />
+        </EntityType>
+        <Association Name="ProjectTargets">
+          <End Type="Cobwebs.Project" Role="Project" Multiplicity="1" />
+          <End Type="Cobwebs.Targets" Role="Targets" Multiplicity="*" />
+        </Association>
+        <Association Name="TargetsAvatar">
+          <End Type="Cobwebs.Targets" Role="Targets" Multiplicity="*" />
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="*" />
+        </Association>
+        <Association Name="AvatarAvatar">
+          <End Type="Cobwebs.Avatar" Role="Avatar" Multiplicity="*" />
+          <End Type="Cobwebs.Avatar" Role="Avatar1" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="TargetPlatfrom">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Site" Type="String" Nullable="false" />
+          <NavigationProperty Name="Targets" Relationship="Cobwebs.TargetsTargetPlatfrom" FromRole="TargetPlatfrom" ToRole="Targets" />
+          <Property Name="TargetID" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="TargetsTargetPlatfrom">
+          <End Type="Cobwebs.Targets" Role="Targets" Multiplicity="1" />
+          <End Type="Cobwebs.TargetPlatfrom" Role="TargetPlatfrom" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="CobwebsContainer" StorageEntityContainer="Model1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

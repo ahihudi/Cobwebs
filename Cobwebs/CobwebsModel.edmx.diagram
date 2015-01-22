@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3bce9d608693462dbca8f7fcfbbbe410" Name="Diagram1" ZoomLevel="94" >
+        <EntityTypeShape EntityType="Cobwebs.Account" Width="1.5" PointX="21.375" PointY="6.5" />
+        <EntityTypeShape EntityType="Cobwebs.Avatar" Width="1.5" PointX="16.5" PointY="3.125" />
+        <AssociationConnector Association="Cobwebs.AvatarAccount" />
+        <EntityTypeShape EntityType="Cobwebs.Note" Width="1.5" PointX="19" PointY="2" />
+        <AssociationConnector Association="Cobwebs.NoteAvatar" />
+        <EntityTypeShape EntityType="Cobwebs.AvatarTask" Width="1.5" PointX="15.875" PointY="7.875" />
+        <AssociationConnector Association="Cobwebs.TaskAvatar" />
+        <EntityTypeShape EntityType="Cobwebs.AlertBot" Width="1.5" PointX="16.5" PointY="0.875" />
+        <EntityTypeShape EntityType="Cobwebs.AutoAccount" Width="1.5" PointX="21.375" PointY="3.375" />
+        <AssociationConnector Association="Cobwebs.AutoAccountAlertBot" />
+        <EntityTypeShape EntityType="Cobwebs.Project" Width="1.5" PointX="13.375" PointY="4.625" />
+        <AssociationConnector Association="Cobwebs.ProjectAvatar" ></AssociationConnector>
+        <EntityTypeShape EntityType="Cobwebs.History" Width="1.5" PointX="10.875" PointY="4.625" />
+        <AssociationConnector Association="Cobwebs.AvatarAutoAccount" />
+        <EntityTypeShape EntityType="Cobwebs.Targets" Width="1.5" PointX="13.75" PointY="0.5" />
+        <AssociationConnector Association="Cobwebs.ProjectTargets" />
+        <AssociationConnector Association="Cobwebs.TargetsAvatar" />
+        <AssociationConnector Association="Cobwebs.AvatarAvatar" />
+        <EntityTypeShape EntityType="Cobwebs.Address" Width="1.5" PointX="24.125" PointY="2.625" />
+        <EntityTypeShape EntityType="Cobwebs.TargetPlatfrom" Width="1.5" PointX="11.25" PointY="1.75" />
+        <AssociationConnector Association="Cobwebs.TargetsTargetPlatfrom" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
