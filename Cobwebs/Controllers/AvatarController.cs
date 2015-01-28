@@ -1,135 +1,122 @@
-﻿using Cobwebs.Models;
-using Cobwebs.Models.DAL;
-using Cobwebs.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using Cobwebs.Models;
+using Cobwebs.Models.DAL;
 
 namespace Cobwebs.Controllers
 {
-    public class ProjectController : Controller
+    public class AvatarController : Controller
     {
         private CobwebsContext db = new CobwebsContext();
 
-        // GET: Project
-        public ActionResult Index(int? projectID, int? avatarID)
+        // GET: Avatar
+        public ActionResult Index()
         {
-            var viewModel = new ProjectsIndexData();
-            viewModel.Projects = db.Projects
-                .Include(p => p.Avatars)
-                .OrderBy(p => p.Name);
-            if (projectID != null)
-            {
-                viewModel.ProjectID = projectID.Value;
-                viewModel.Avatars = viewModel.Projects
-                    .Single(p => p.ID == projectID.Value)
-                    .Avatars
-                    .OrderBy(a => a.LastName);
-            }
-            if (avatarID != null)
-            {
-                viewModel.AvatarID = avatarID.Value;
-                viewModel.Notes = viewModel.Avatars
-                    .Single(a => a.ID == avatarID.Value)
-                    .Notes
-                    .OrderBy(n => n.DateModified);
-            }
-            return View(viewModel);
+            var avatars = db.Avatars.Include(a => a.Project);
+            return View(avatars.ToList());
         }
 
-        // GET: Project/Details/5
+        // GET: Avatar/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Avatar avatar = db.Avatars.Find(id);
+            if (avatar == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(avatar);
         }
 
-        // GET: Project/Create
+        // GET: Avatar/Create
         public ActionResult Create()
         {
+            ViewBag.ProjectID = new SelectList(db.Projects, "ID", "Name");
             return View();
         }
 
-        // POST: Project/Create
+        // POST: Avatar/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,DateCreated,DateModified")] Project project)
+        public ActionResult Create([Bind(Include = "ID,ProjectID,LastName,FirstName,AvatarType,Gender,DateCreated,DateModified")] Avatar avatar)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
-                //project.Avatars.Add({}); //Add default avatar
+                db.Avatars.Add(avatar);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            ViewBag.ProjectID = new SelectList(db.Projects, "ID", "Name", avatar.ProjectID);
+            return View(avatar);
         }
 
-        // GET: Project/Edit/5
+        // GET: Avatar/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Avatar avatar = db.Avatars.Find(id);
+            if (avatar == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            ViewBag.ProjectID = new SelectList(db.Projects, "ID", "Name", avatar.ProjectID);
+            return View(avatar);
         }
 
-        // POST: Project/Edit/5
+        // POST: Avatar/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,DateCreated,DateModified")] Project project)
+        public ActionResult Edit([Bind(Include = "ID,ProjectID,LastName,FirstName,AvatarType,Gender,DateCreated,DateModified")] Avatar avatar)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(avatar).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            ViewBag.ProjectID = new SelectList(db.Projects, "ID", "Name", avatar.ProjectID);
+            return View(avatar);
         }
 
-        // GET: Project/Delete/5
+        // GET: Avatar/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Avatar avatar = db.Avatars.Find(id);
+            if (avatar == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(avatar);
         }
 
-        // POST: Project/Delete/5
+        // POST: Avatar/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            Avatar avatar = db.Avatars.Find(id);
+            db.Avatars.Remove(avatar);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

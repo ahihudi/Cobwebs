@@ -1,135 +1,122 @@
-﻿using Cobwebs.Models;
-using Cobwebs.Models.DAL;
-using Cobwebs.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using Cobwebs.Models;
+using Cobwebs.Models.DAL;
 
 namespace Cobwebs.Controllers
 {
-    public class ProjectController : Controller
+    public class AvatarNoteController : Controller
     {
         private CobwebsContext db = new CobwebsContext();
 
-        // GET: Project
-        public ActionResult Index(int? projectID, int? avatarID)
+        // GET: AvatarNote
+        public ActionResult Index()
         {
-            var viewModel = new ProjectsIndexData();
-            viewModel.Projects = db.Projects
-                .Include(p => p.Avatars)
-                .OrderBy(p => p.Name);
-            if (projectID != null)
-            {
-                viewModel.ProjectID = projectID.Value;
-                viewModel.Avatars = viewModel.Projects
-                    .Single(p => p.ID == projectID.Value)
-                    .Avatars
-                    .OrderBy(a => a.LastName);
-            }
-            if (avatarID != null)
-            {
-                viewModel.AvatarID = avatarID.Value;
-                viewModel.Notes = viewModel.Avatars
-                    .Single(a => a.ID == avatarID.Value)
-                    .Notes
-                    .OrderBy(n => n.DateModified);
-            }
-            return View(viewModel);
+            var avatarNotes = db.AvatarNotes.Include(a => a.Avatar);
+            return View(avatarNotes.ToList());
         }
 
-        // GET: Project/Details/5
+        // GET: AvatarNote/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            AvatarNote avatarNote = db.AvatarNotes.Find(id);
+            if (avatarNote == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(avatarNote);
         }
 
-        // GET: Project/Create
+        // GET: AvatarNote/Create
         public ActionResult Create()
         {
+            ViewBag.AvatarID = new SelectList(db.Avatars, "ID", "LastName");
             return View();
         }
 
-        // POST: Project/Create
+        // POST: AvatarNote/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,DateCreated,DateModified")] Project project)
+        public ActionResult Create([Bind(Include = "ID,AvatarID,Content,DateCreated,DateModified")] AvatarNote avatarNote)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
-                //project.Avatars.Add({}); //Add default avatar
+                db.AvatarNotes.Add(avatarNote);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            ViewBag.AvatarID = new SelectList(db.Avatars, "ID", "LastName", avatarNote.AvatarID);
+            return View(avatarNote);
         }
 
-        // GET: Project/Edit/5
+        // GET: AvatarNote/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            AvatarNote avatarNote = db.AvatarNotes.Find(id);
+            if (avatarNote == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            ViewBag.AvatarID = new SelectList(db.Avatars, "ID", "LastName", avatarNote.AvatarID);
+            return View(avatarNote);
         }
 
-        // POST: Project/Edit/5
+        // POST: AvatarNote/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,DateCreated,DateModified")] Project project)
+        public ActionResult Edit([Bind(Include = "ID,AvatarID,Content,DateCreated,DateModified")] AvatarNote avatarNote)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(avatarNote).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            ViewBag.AvatarID = new SelectList(db.Avatars, "ID", "LastName", avatarNote.AvatarID);
+            return View(avatarNote);
         }
 
-        // GET: Project/Delete/5
+        // GET: AvatarNote/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            AvatarNote avatarNote = db.AvatarNotes.Find(id);
+            if (avatarNote == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(avatarNote);
         }
 
-        // POST: Project/Delete/5
+        // POST: AvatarNote/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            AvatarNote avatarNote = db.AvatarNotes.Find(id);
+            db.AvatarNotes.Remove(avatarNote);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

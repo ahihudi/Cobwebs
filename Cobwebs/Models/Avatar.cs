@@ -38,7 +38,7 @@ namespace Cobwebs.Models
 
     public enum AvatarType
     {
-        Main, Sub
+        Main, Sub, ProjectDefault
     }
 
     public enum Gender
